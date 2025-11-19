@@ -12,7 +12,7 @@ Model name is converted to lowercase for the collection name:
 """
 
 from pydantic import BaseModel, Field
-from typing import Optional
+from typing import Optional, Any, Dict
 
 # Example schemas (replace with your own):
 
@@ -37,6 +37,23 @@ class Product(BaseModel):
     price: float = Field(..., ge=0, description="Price in dollars")
     category: str = Field(..., description="Product category")
     in_stock: bool = Field(True, description="Whether product is in stock")
+
+# AQI scan history schema
+class Scan(BaseModel):
+    """
+    Air quality scan results
+    Collection name: "scan"
+    """
+    source: str = Field(..., description="camera | geolocation | search")
+    method: str = Field(..., description="estimation method or API used")
+    aqi: Optional[int] = Field(None, ge=0, le=500, description="AQI value")
+    category: Optional[str] = Field(None, description="AQI category label")
+    lat: Optional[float] = Field(None, description="Latitude")
+    lon: Optional[float] = Field(None, description="Longitude")
+    city: Optional[str] = Field(None, description="City name if available")
+    country: Optional[str] = Field(None, description="Country code if available")
+    metrics: Optional[Dict[str, Any]] = Field(None, description="Raw metrics used for estimation")
+    note: Optional[str] = Field(None, description="Extra info or tips")
 
 # Add your own schemas here:
 # --------------------------------------------------
